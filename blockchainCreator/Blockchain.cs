@@ -1,3 +1,6 @@
+using System.Net.Http.Json;
+using Newtonsoft.Json;
+
 namespace blockchainCreator;
 
 public class Blockchain
@@ -9,19 +12,20 @@ public class Blockchain
         InitialiseChain();
         AddGenesisBlock();
         Console.WriteLine("New Chain Created!");
+        AddBlock(new Block(DateTime.Now, null, "{Sam and Nick are getting married in two days}"));
     }
 
-    public void InitialiseChain()
+    private void InitialiseChain()
     {
         Chain = new List<Block>();
     }
 
-    public void AddGenesisBlock()
+    private void AddGenesisBlock()
     {
         Chain.Add(CreateGenesisBlock());
     }
 
-    public Block CreateGenesisBlock()
+    private Block CreateGenesisBlock()
     {
         return new Block(DateTime.Now, null, "{}");
     }
@@ -60,10 +64,17 @@ public class Blockchain
 
     public void ShowAllBlocksData()
     {
+        
         foreach (var t in Chain)
         {
             Console.WriteLine(t.Data);
         }
+    }
+
+    public string ShowDataForLatestBlock()
+    {
+        var data = Chain[Chain.Count - 1].Data;
+        return JsonConvert.SerializeObject(data);
     }
 }
 
